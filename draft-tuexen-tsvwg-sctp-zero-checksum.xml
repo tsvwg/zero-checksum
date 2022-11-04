@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?xml-model href="rfc7991bis.rnc"?>
+<?rfc toc='yes'?>
+<?rfc compact='yes'?>
+<?rfc subcompact='no'?>
+
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     xml:lang="en"
+     ipr="trust200902"
+     submissionType="IETF"
+     consensus="true"
+     category="std"
+     docName="draft-tuexen-tsvwg-sctp-zero-checksum-00"
+     version="3">
+
+<front>
+<title abbrev='Zero Checksum for SCTP'>
+Zero Checksum for the Stream Control Transmission Protocol
+</title>
+<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-sctp-zero-checksum-00"/>
+
+<author initials="M." surname="Tüxen" fullname="Michael Tüxen">
+  <organization abbrev='Münster Univ. of Appl. Sciences'>
+                Münster University of Applied Sciences</organization>
+  <address>
+    <postal>
+        <street>Stegerwaldstrasse 39</street>
+        <city>48565 Steinfurt</city>
+        <country>Germany</country>
+    </postal>
+    <email>tuexen@fh-muenster.de</email>
+  </address>
+</author>
+
+<author initials='V.' surname='Boivie' fullname='Victor Boivie'>
+  <organization>Google</organization>
+  <address>
+    <postal>
+      <street>Kungsbron 2</street>
+      <city>Stockholm</city>
+      <code>11122</code>
+      <country>Sweden</country>
+    </postal>
+    <email>boivie@google.com</email>
+  </address>
+</author>
+
+<author initials='F.' surname='Castelli' fullname='Florent Castelli'>
+  <organization>Google</organization>
+  <address>
+    <postal>
+      <street>Kungsbron 2</street>
+      <city>Stockholm</city>
+      <code>11122</code>
+      <country>Sweden</country>
+    </postal>
+    <email>orphis@google.com</email>
+  </address>
+</author>
+
+<author initials="R." surname="Jesup" fullname="Randell Jesup">
+<organization abbrev='Mozilla'>
+              Mozilla Corporation</organization>
+<address>
+    <postal>
+        <street>1835 Horse Shoe Trl</street>
+        <city>Malvern</city>
+        <region>PA</region>
+        <code>19355</code>
+        <country>US</country>
+    </postal>
+    <email>randell-ietf@jesup.org</email>
+</address>
+</author>
+
+<date />
+
+<abstract>
+<t>The Stream Control Transmission Protocol (SCTP) uses a 32-bit checksum in
+the common header of each packet to provide some level of data integrity.
+When the lower layer used by SCTP does already provide the same or a
+higher level of data integrity, computing this checksum does not provide any
+additional protection, but does require computing resources. 
+This document provides a simple extension to SCTP allowing to save these
+computing resources by using the constant 0 as the checksum.</t>
+</abstract>
+</front>
+
+<middle>
+<section>
+<name>Introduction</name>
+<t>SCTP as specified in <xref target="RFC9260"/> uses a CRC32c to provide some
+level of data integrity.
+When using, for example, Datagram Transport Layer Security (DTLS) as the lower
+layer for SCTP as specified in <xref target="RFC8261"/>, using the CRC32c does
+not provide any additional protection over the one already provided by DTLS.
+However, computing the CRC32c at the sender and receiver side does require
+computational resources for no benefit.
+This is in particular important for computational limited end points using
+SCTP encapsulated in DTLS.</t>
+<t>The extension described in this document allows an SCTP end point to
+declare that it accepts SCTP packets with a checksum of zero.
+This declaration happens during the setup of the SCTP association and allows
+end points supporting this extension to be interoperable with end points not
+supporting the extension described in this document.</t>
+<t>End points using this extension still need to implement the CRC32c checksum
+algorithms.</t>
+</section>
+
+<section anchor='conventions'>
+<name>Conventions</name>
+<t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>",
+"<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>",
+"<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>",
+"<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>",
+"<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to
+be interpreted as described in
+BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when,
+they appear in all capitals, as shown here.</t>
+</section>
+
+<section>
+<name>A New Chunk Parameter</name>
+<t>The Zero Checksum Acceptable Chunk Parameter is defined by the
+following figure.</t>
+<figure>
+<name>Zero Checksum Acceptable Chunk Parameter</name>
+<artwork align="left">
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Type = 0x8001         |          Length = 4           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+<dl newline="true">
+<dt>Type: 16 bits (unsigned integer)</dt>
+<dd>
+<t>This field holds the IANA defined parameter type for the
+"Zero Checksum Acceptable" chunk parameter.
+IANA is requested to assign the value 32769 (0x8001) for this parameter type.</t>
+</dd>
+<dt>Length: 16 bits (unsigned integer)</dt>
+<dd>
+<t>This field holds the length in bytes of the chunk parameter;
+the value <bcp14>MUST</bcp14> be 4.</t>
+</dd>
+</dl>
+<t>All transported integer numbers are in "network byte order" a.k.a.,
+Big Endian.</t>
+<t>The Zero Checksum Acceptable Chunk Parameter <bcp14>MAY</bcp14> appear
+in INIT and INIT ACK chunks.
+It <bcp14>MUST NOT</bcp14> appear in any other chunk.</t>
+<t>If an end point not supporting the extension described in this document
+receives this parameter in an INIT or INIT ACK chunk, it skips it and
+continues to process further parameters in the chunk.
+This behaviour is <bcp14>REQUIRED</bcp14> by <xref target="RFC9260"/> because
+the highest-order 2 bits of the Type are 10.</t>
+</section>
+
+<section>
+<name>Procedures</name>
+<t>An end point willing to accept SCTP packets with a checksum of zero,
+<bcp14>MAY</bcp14> include the Zero Checksum Acceptable Chunk Parameter in
+the INIT or INIT ACK chunk it sends. An end point <bcp14>MUST</bcp14> do
+this consistently.</t>
+<t>If an end point has sent the Zero Checksum Acceptable Chunk Parameter in
+an INIT or INIT ACK chunk, it <bcp14>MUST</bcp14> accept SCTP packets using
+a checksum value of zero for this association.
+It <bcp14>MUST</bcp14> also accept SCTP packets containing the correct CRC32c
+checksum field.</t>
+<t>When an end point sends a packet containing an INIT chunk, it
+<bcp14>MUST</bcp14> include a CRC32c checksum in the packet containing the
+INIT chunk.</t>
+<t>When an end point receives an "Out of the Blue" (OOTB) SCTP packet and needs
+to send a response, it <bcp14>MUST</bcp14> include a CRC32c checksum in the
+response.</t>
+<t>If an end point has received an INIT or INIT ACK chunk from its peer during
+the association setup, it <bcp14>MAY</bcp14> use zero as the checksum for all
+packets sent in this association.</t>
+</section>
+
+<section>
+<name>Socket API Considerations</name>
+<t>This section describes how the socket API defined in
+<xref target='RFC6458'/> needs to be extended to provide a way for the
+application to control the UDP encapsulation.</t>
+<t>Please note that this section is informational only.</t>
+<t>A socket API implementation based on <xref target='RFC6458'/> is extended by
+supporting one new read/write IPPROTO_SCTP level socket option.</t>
+
+<section>
+<name>Get or Set Accepting a Zero Checksum
+      (SCTP_ACCEPT_ZERO_CHECKSUM)</name>
+<t>This socket option can be used to control the acceptance of a zero checksum.
+It applies only to future SCTP associations on the socket.</t>
+<t>This option expects an integer boolean flag, where a non-zero value
+turns on the option, and a zero value turns off the option.</t>
+<t>This option is off by default.</t>
+</section>
+</section>
+
+<section>
+<name>IANA Considerations</name>
+<t>[NOTE to RFC-Editor: "RFCXXXX" is to be replaced by the RFC number you
+assign this document.]</t>
+<t>[NOTE to RFC-Editor: The requested value for the parameter type is tentative
+and to be confirmed by IANA.]</t>
+<t>This document (RFCXXXX) is the reference for the registration described
+in this section.</t>
+<t>A new chunk parameter type has to be assigned by IANA.
+This requires an additional line in the "Chunk Parameter Types" registry for
+SCTP:</t>
+<table>
+<name>New entry in "Chunk Parameter Types" registry</name>
+<thead>
+<tr><th>ID Value</th> <th>Chunk Parameter Type             </th> <th>Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>32769</td>    <td>Zero Checksum Acceptable (0x8001)</td> <td>[RFCXXXX]</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<name>Security Considerations</name>
+<t>This document does not change the considerations given in
+<xref target="RFC9260"/>.</t>
+</section>
+</middle>
+
+<back>
+<references>
+<name>References</name>
+<references>
+<name>Normative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8261.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
+</references>
+
+<references>
+<name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
+</references>
+</references>
+
+<!--
+<section numbered='false'>
+<name>Acknowledgments</name>
+<t>The authors wish to thank
+<contact fullname="..."/> and
+<contact fullname="..."/>
+for their invaluable comments.</t>
+</section>
+-->
+</back>
+</rfc>
