@@ -128,7 +128,7 @@ following figure.</t>
 <artwork align="left">
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         Type = 0x8001         |          Length = 4           |
+|   Type = 0x8001 (suggested)   |          Length = 4           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </figure>
@@ -137,7 +137,8 @@ following figure.</t>
 <dd>
 <t>This field holds the IANA defined parameter type for the
 "Zero Checksum Acceptable" chunk parameter.
-IANA is requested to assign the value 32769 (0x8001) for this parameter type.</t>
+IANA is requested to assign the value 32769 (0x8001) (suggested) for this
+parameter type.</t>
 </dd>
 <dt>Length: 16 bits (unsigned integer)</dt>
 <dd>
@@ -203,7 +204,7 @@ turns on the option, and a zero value turns off the option.</t>
 <name>IANA Considerations</name>
 <t>[NOTE to RFC-Editor: "RFCXXXX" is to be replaced by the RFC number you
 assign this document.]</t>
-<t>[NOTE to RFC-Editor: The requested value for the parameter type is tentative
+<t>[NOTE to RFC-Editor: The suggested value for the parameter type is tentative
 and to be confirmed by IANA.]</t>
 <t>This document (RFCXXXX) is the reference for the registration described
 in this section.</t>
@@ -213,10 +214,10 @@ SCTP:</t>
 <table>
 <name>New entry in "Chunk Parameter Types" registry</name>
 <thead>
-<tr><th>ID Value</th> <th>Chunk Parameter Type             </th> <th>Reference</th></tr>
+<tr><th>ID Value</th>             <th>Chunk Parameter Type             </th> <th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>32769</td>    <td>Zero Checksum Acceptable (0x8001)</td> <td>[RFCXXXX]</td></tr>
+<tr><td>32769 (suggested)</td>    <td>Zero Checksum Acceptable (0x8001)</td> <td>[RFCXXXX]</td></tr>
 </tbody>
 </table>
 </section>
