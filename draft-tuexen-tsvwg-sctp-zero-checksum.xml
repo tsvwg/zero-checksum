@@ -78,11 +78,12 @@ Zero Checksum for the Stream Control Transmission Protocol
 <abstract>
 <t>The Stream Control Transmission Protocol (SCTP) uses a 32-bit checksum in
 the common header of each packet to provide some level of data integrity.
-When the lower layer used by SCTP does already provide the same or a
-higher level of data integrity, computing this checksum does not provide any
-additional protection, but does require computing resources. 
+When the lower layer used by SCTP provides already the same or a higher level
+of data integrity, computing this checksum does not provide any additional
+protection, but does require computing resources.
 This document provides a simple extension to SCTP allowing to save these
-computing resources by using the constant 0 as the checksum.</t>
+computing resources by using the constant 0 as the checksum in a backwards
+compatible way.</t>
 </abstract>
 </front>
 
@@ -102,9 +103,9 @@ SCTP encapsulated in DTLS.</t>
 declare that it accepts SCTP packets with a checksum of zero.
 This declaration happens during the setup of the SCTP association and allows
 end points supporting this extension to be interoperable with end points not
-supporting the extension described in this document.</t>
-<t>End points using this extension still need to implement the CRC32c checksum
-algorithms.</t>
+supporting the extension described in this document.
+To provide this backwards compatibility, end points using this extension still
+need to implement the CRC32c checksum algorithm.</t>
 </section>
 
 <section anchor='conventions'>
@@ -152,42 +153,100 @@ Big Endian.</t>
 in INIT and INIT ACK chunks.
 It <bcp14>MUST NOT</bcp14> appear in any other chunk.</t>
 <t>If an end point not supporting the extension described in this document
-receives this parameter in an INIT or INIT ACK chunk, it skips it and
-continues to process further parameters in the chunk.
-This behaviour is <bcp14>REQUIRED</bcp14> by <xref target="RFC9260"/> because
-the highest-order 2 bits of the Type are 10.</t>
+receives this parameter in an INIT or INIT ACK chunk, it skips this parameter
+and continues to process further parameters in the chunk.
+This behavior is <bcp14>REQUIRED</bcp14> by <xref target="RFC9260"/> because
+the highest-order two bits of the Type are '10'.</t>
 </section>
 
 <section>
 <name>Procedures</name>
-<t>An end point willing to accept SCTP packets with a checksum of zero,
-<bcp14>MAY</bcp14> include the Zero Checksum Acceptable Chunk Parameter in
-the INIT or INIT ACK chunk it sends. An end point <bcp14>MUST</bcp14> do
-this consistently.</t>
+
+<section>
+<name>Declaration of Feature Support</name>
+<t>If the lower layer of SCTP provides an equal or better level of data
+integrity protection than the one provided by using the CRC32c algorithm,
+the computation of the CRC32c checksum requires computational resources without
+providing any benefit.
+To avoid this, an SCTP end point <bcp14>MAY</bcp14> be willing to accept
+SCTP packets with an incorrect CRC32c checksum value of zero in addition to SCTP
+packets with correct CRC32c checksum values.
+An SCTP endpoint <bcp14>SHOULD NOT</bcp14> be willing to accept SCTP packets
+with an incorrect CRC32c checksum value of zero, if the lower layer does not
+provide at least the level of data integrity the CRC32c checksum algorithm
+provides.</t>
+<t>One example of such a lower layer is the use of SCTP over DTLS as described
+in <xref target="RFC8261"/> (as used in the WebRTC context), a counter example
+is the use of SCTP Authentication as specified in <xref target="RFC4895"/>.
+Since the lower layer of SCTP can not be IPv4 or IPv6 as specified in
+<xref target="RFC9260"/> or UDP as specified in <xref target="RFC6951"/>,
+no problems with middle boxes expecting correct CRC32c checksums in the SCTP
+packets are expected.</t>
+<t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
+indicate that it is fine to accept SCTP packet with incorrect CRC32c values of
+zero.</t>
+<t>An end point willing to accept SCTP packets with a checksum of zero
+<bcp14>MUST</bcp14> include the Zero Checksum Acceptable Chunk Parameter in
+the INIT or INIT ACK chunk it sends.</t>
+</section>
+
+<section>
+<name>Sender Side Considerations</name>
+<t>If an end point has received an INIT or INIT ACK chunk containing a Zero
+Checksum Acceptable Chunk Parameter from its peer during the association setup,
+it <bcp14>SHOULD</bcp14> use zero as the checksum for all packets sent in this
+association with the following three exceptions:</t>
+<ul>
+<li><t>When an end point sends a packet containing an INIT chunk, it
+<bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
+the INIT chunk.</t></li>
+<li><t>When an end point sends a packet containing a COOKIE chunk, it
+<bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
+the COOKIE chunk.</t></li>
+<li><t>When an end point supports the dynamic address reconfiguration specified
+in <xref target='RFC5061'/> and sends a packet containing an ASCONF chunk, it
+<bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
+the ASCONF chunk.</t></li>
+</ul>
+<t>The first exception allows backwards compatibility and the second and
+third exception allow a simpler implementation of the extension defined in this
+document.</t>
+<t>When an end point responds to an "Out of the Blue" (OOTB) SCTP packet,
+it <bcp14>MUST</bcp14> include a correct CRC32c checksum in the response
+packet.</t>
+<t>An SCTP end point <bcp14>MAY</bcp14> only send packets with an incorrect
+checksum of zero, if the upper layer allowed the reception of SCTP packets with
+an incorrect zero checksum.</t>
+</section>
+
+<section>
+<name>Receiver Side Considerations</name>
+<t>Zero is a valid result of the CRC32c algorithm.
+<!-- Maybe present an example; would also be a good additional test case. -->
+Therefore, a receiver of an SCTP packet containing a checksum value of zero
+cannot determine whether the sender included an incorrect CRC32c of zero to
+reduce the CPU cost or the result of the CRC32c computation was actually zero.
+However, if the receiver has sent the Zero Checksum Acceptable Chunk Parameter
+during the handshake, this ambiguity is irrelevant, since the receiver is fine
+with not using the CRC32c to protect incoming packets.</t>
 <t>If an end point has sent the Zero Checksum Acceptable Chunk Parameter in
 an INIT or INIT ACK chunk, it <bcp14>MUST</bcp14> accept SCTP packets using
-a checksum value of zero for this association.
-It <bcp14>MUST</bcp14> also accept SCTP packets containing the correct CRC32c
-checksum field.</t>
-<t>When an end point sends a packet containing an INIT chunk, it
-<bcp14>MUST</bcp14> include a CRC32c checksum in the packet containing the
-INIT chunk.</t>
-<t>When an end point receives an "Out of the Blue" (OOTB) SCTP packet and needs
-to send a response, it <bcp14>MUST</bcp14> include a CRC32c checksum in the
-response.</t>
-<t>If an end point has received an INIT or INIT ACK chunk from its peer during
-the association setup, it <bcp14>MAY</bcp14> use zero as the checksum for all
-packets sent in this association.</t>
+an incorrect checksum value of zero in addition to SCTP packets containing the
+correct CRC32c checksum value for this association.</t>
+<t>An SCTP implementation <bcp14>MAY</bcp14> process OOTB SCTP packets having
+an incorrect zero checksum in addition to OOTB packets with a correct CRC32c
+checksum.</t>
+</section>
 </section>
 
 <section>
 <name>Socket API Considerations</name>
 <t>This section describes how the socket API defined in
 <xref target='RFC6458'/> needs to be extended to provide a way for the
-application to control the UDP encapsulation.</t>
+application to control the acceptance of a zero checksum.</t>
 <t>Please note that this section is informational only.</t>
 <t>A socket API implementation based on <xref target='RFC6458'/> is extended by
-supporting one new read/write IPPROTO_SCTP level socket option.</t>
+supporting one new write-only IPPROTO_SCTP-level socket option.</t>
 
 <section>
 <name>Set Accepting a Zero Checksum (SCTP_ACCEPT_ZERO_CHECKSUM)</name>
@@ -195,8 +254,14 @@ supporting one new read/write IPPROTO_SCTP level socket option.</t>
 It is a write-only socket options and applies only to future SCTP associations
 on the socket.</t>
 <t>This option expects an integer boolean flag, where a non-zero value
-turns on the option, and a zero value turns off the option.</t>
-<t>This option is off by default.</t>
+enables the option, and a zero value disables the option.
+An implementation might only</t>
+<ul>
+<li><t>support enabling the option, but not disabling it again.</t></li>
+<li><t>send packets with an incorrect checksum of zero, if this option is
+enabled.</t></li>
+</ul>
+<t>This option is disabled by default.</t>
 </section>
 </section>
 
@@ -235,6 +300,7 @@ SCTP:</t>
 <references>
 <name>Normative References</name>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5061.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8261.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
@@ -242,18 +308,20 @@ SCTP:</t>
 
 <references>
 <name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6951.xml"/>
 </references>
 </references>
 
-<!--
 <section numbered='false'>
 <name>Acknowledgments</name>
 <t>The authors wish to thank
-<contact fullname="..."/> and
-<contact fullname="..."/>
+<contact fullname="Gorry Fairhurst"/>,
+<contact fullname="Mike Heard"/>,
+<contact fullname="Claudio Porfiri"/>, and
+<contact fullname="Magnus Westerlund"/>
 for their invaluable comments.</t>
 </section>
--->
 </back>
 </rfc>
