@@ -32,7 +32,7 @@
 +0.0 `sysctl -w net.inet.sctp.reconfig_enable=0`
 +0.0 `sysctl -w net.inet.sctp.nrsack_enable=0`
 +0.0 `sysctl -w net.inet.sctp.pktdrop_enable=0`
-+0.0 `sysctl -w net.inet.sctp.ootb_with_zero_cksum=1`
++0.0 `sysctl -w net.inet.sctp.ootb_with_zero_cksum=0`
 +0.0 socket(..., SOCK_STREAM, IPPROTO_SCTP) = 3
 +0.0 fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
 +0.0 setsockopt(3, IPPROTO_SCTP, SCTP_ACCEPT_ZERO_CHECKSUM, [1], 4) = 0
@@ -49,9 +49,7 @@
 +0.0 close(3)= 0
 +0.0 > sctp(zero_checksum): ABORT[flgs=0, USER_INITIATED_ABORT[info=""]]
 +1.0 < sctp(zero_checksum): SHUTDOWN[flgs=0, cum_tsn=0]
-+0.0 > sctp: ABORT[flgs=T]
 +1.0 < sctp(zero_checksum): SHUTDOWN_ACK[flgs=0]
-+0.0 > sctp: SHUTDOWN_COMPLETE[flgs=T]
 +1.0 < sctp: SHUTDOWN[flgs=0, cum_tsn=0]
 +0.0 > sctp: ABORT[flgs=T]
 +1.0 < sctp: SHUTDOWN_ACK[flgs=0]
