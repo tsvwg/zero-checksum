@@ -255,12 +255,8 @@ It is a write-only socket options and applies only to future SCTP associations
 on the socket.</t>
 <t>This option expects an integer boolean flag, where a non-zero value
 enables the option, and a zero value disables the option.
-An implementation might only</t>
-<ul>
-<li><t>support enabling the option, but not disabling it again.</t></li>
-<li><t>send packets with an incorrect checksum of zero, if this option is
-enabled.</t></li>
-</ul>
+An implementation might only send packets with an incorrect checksum of zero,
+if this option is enabled.</t>
 <t>This option is disabled by default.</t>
 </section>
 </section>
