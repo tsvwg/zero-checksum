@@ -43,10 +43,7 @@
 +0.0 > sctp: INIT_ACK[flgs=0, tag=2, a_rwnd=..., os=..., is=..., tsn=...,
                       ZERO_CHECKSUM_ACCEPTABLE[],
                       STATE_COOKIE[len=..., val=...]]
-// FreeBSD does not accept a packet containing the COOCKIE_ECHO chunk with
-// a zero checksum.
-+0.0 < sctp(zero_checksum): COOKIE_ECHO[flgs=0, len=..., val=...]
-+1.0 < sctp: COOKIE_ECHO[flgs=0, len=..., val=...]
++0.0 < sctp: COOKIE_ECHO[flgs=0, len=..., val=...]
 +0.0 > sctp: COOKIE_ACK[flgs=0]
 +0.0 accept(3, ..., ...) = 4
 +0.0 close(3) = 0
