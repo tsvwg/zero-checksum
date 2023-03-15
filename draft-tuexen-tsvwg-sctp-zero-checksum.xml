@@ -200,9 +200,9 @@ association with the following three exceptions:</t>
 <li><t>When an end point sends a packet containing an INIT chunk, it
 <bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
 the INIT chunk.</t></li>
-<li><t>When an end point sends a packet containing a COOKIE chunk, it
+<li><t>When an end point sends a packet containing a COOKIE ECHO chunk, it
 <bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
-the COOKIE chunk.</t></li>
+the COOKIE ECHO chunk.</t></li>
 <li><t>When an end point supports the dynamic address reconfiguration specified
 in <xref target='RFC5061'/> and sends a packet containing an ASCONF chunk, it
 <bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
