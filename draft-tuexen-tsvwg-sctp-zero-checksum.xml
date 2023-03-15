@@ -174,8 +174,8 @@ packets with correct CRC32c checksum values.
 An SCTP endpoint <bcp14>SHOULD NOT</bcp14> be willing to accept SCTP packets
 with an incorrect CRC32c checksum value of zero, if the lower layer does not
 provide at least the level of data integrity the CRC32c checksum algorithm
-provides.</t>
-<t>One example of such a lower layer is the use of SCTP over DTLS as described
+provides.
+One example of such a lower layer is the use of SCTP over DTLS as described
 in <xref target="RFC8261"/> (as used in the WebRTC context), a counter example
 is the use of SCTP Authentication as specified in <xref target="RFC4895"/>.
 Since the lower layer of SCTP can not be IPv4 or IPv6 as specified in
