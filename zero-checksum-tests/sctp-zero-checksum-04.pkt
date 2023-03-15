@@ -51,7 +51,8 @@
                                      ZERO_CHECKSUM_ACCEPTABLE[],
                                      STATE_COOKIE[len=4, val=...]]
 +0.0 > sctp: COOKIE_ECHO[flgs=0, len=4, val=...]
-// Right now FreeBSD has a bug in computing the T1-cookie timer. So don't specify the timeout.
+// Right now FreeBSD has a bug in computing the T1-cookie timer.
+// Therefore don't specify the timeout. Fix this once the bug is fixed.
 *    > sctp: COOKIE_ECHO[flgs=0, len=4, val=...]
 +0.0 < sctp(zero_checksum): COOKIE_ACK[flgs=0]
 +0.0 close(3)= 0
