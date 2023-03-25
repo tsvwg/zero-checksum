@@ -275,10 +275,10 @@ SCTP:</t>
 <table>
 <name>New entry in "Chunk Parameter Types" registry</name>
 <thead>
-<tr><th>ID Value</th>             <th>Chunk Parameter Type             </th> <th>Reference</th></tr>
+<tr><th>ID Value</th>             <th>Chunk Parameter Type</th>                          <th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>32769 (suggested)</td>    <td>Zero Checksum Acceptable (0x8001 suggested)</td> <td>[RFCXXXX]</td></tr>
+<tr><td>32769 (suggested)</td>    <td>Zero Checksum Acceptable (0x8001 (suggested))</td> <td>[RFCXXXX]</td></tr>
 </tbody>
 </table>
 </section>
