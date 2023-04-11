@@ -96,7 +96,7 @@ When using, for example, Datagram Transport Layer Security (DTLS) as the lower
 layer for SCTP as specified in <xref target="RFC8261"/>, using the CRC32c does
 not provide any additional protection over the one already provided by DTLS.
 However, computing the CRC32c at the sender and receiver side does require
-computational resources for no benefit.
+computationally resources for no benefit.
 This is in particular important for computational limited end points using
 SCTP encapsulated in DTLS.</t>
 <t>The extension described in this document allows an SCTP end point to
