@@ -251,7 +251,7 @@ supporting one new write-only IPPROTO_SCTP-level socket option.</t>
 <section>
 <name>Set Accepting a Zero Checksum (SCTP_ACCEPT_ZERO_CHECKSUM)</name>
 <t>This socket option can be used to control the acceptance of a zero checksum.
-It is a write-only socket options and applies only to future SCTP associations
+It is a write-only socket option and applies only to future SCTP associations
 on the socket.</t>
 <t>This option expects an integer boolean flag, where a non-zero value
 enables the option, and a zero value disables the option.
