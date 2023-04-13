@@ -185,7 +185,7 @@ Counter examples include:</t>
 </ul>
 <t>Therefore using an incorrect zero checksum, in particular when using SCTP
 over DTLS, will not result in problems with the middle boxes expecting correct
-CRC32c checksums in SCTP packets.
+CRC32c checksums in SCTP packets.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
 indicate that it is fine to accept SCTP packet with incorrect CRC32c values of
 zero.</t>
