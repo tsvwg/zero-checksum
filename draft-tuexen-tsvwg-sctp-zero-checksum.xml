@@ -187,8 +187,8 @@ Counter examples include:</t>
 over DTLS, will not result in problems with the middle boxes expecting correct
 CRC32c checksums in SCTP packets.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
-indicate that it is fine to accept SCTP packet with incorrect CRC32c values of
-zero.</t>
+indicate that it is fine to accept SCTP packets with an incorrect CRC32c value
+of zero.</t>
 <t>An end point willing to accept SCTP packets with a checksum of zero
 <bcp14>MUST</bcp14> include the Zero Checksum Acceptable Chunk Parameter in
 the INIT or INIT ACK chunk it sends.</t>
