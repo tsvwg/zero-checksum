@@ -43,7 +43,7 @@
                   SUPPORTED_ADDRESS_TYPES[types=[IPv4]]]
 // FreeBSD does not yet support the sending of the packet containing the
 // INIT-ACK chunk with a zero checksum.
-// This is a limitation an needs to be fixed.
+// This is a limitation and needs to be fixed.
 +0.0 > sctp: INIT_ACK[flgs=0, tag=2, a_rwnd=..., os=..., is=..., tsn=...,
                       ZERO_CHECKSUM_ACCEPTABLE[],
                       STATE_COOKIE[len=..., val=...]]
