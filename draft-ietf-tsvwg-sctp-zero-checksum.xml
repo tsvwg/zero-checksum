@@ -78,8 +78,8 @@ Zero Checksum for the Stream Control Transmission Protocol
 <abstract>
 <t>The Stream Control Transmission Protocol (SCTP) uses a 32-bit checksum in
 the common header of each packet to provide some level of data integrity.
-When an alternate method used by SCTP provides already the same or a higher
-level of data integrity, computing this checksum does not provide any additional
+When some method used by SCTP provides already the same or a higher level of
+data integrity, computing this checksum does not provide any additional
 protection, but does require computing resources.
 This document provides a simple extension to SCTP allowing to save these
 computing resources by using the constant 0 as a checksum in a backwards
@@ -101,7 +101,7 @@ This is in particular important for computational limited end points using
 SCTP encapsulated in DTLS.</t>
 <t>The extension described in this document allows an SCTP end point to
 declare that it accepts SCTP packets with a checksum of zero when using
-a specified alternate method of error detection.
+a specified alternate error detection method.
 This declaration happens during the setup of the SCTP association and allows
 end points supporting this extension to be interoperable with end points not
 supporting the extension described in this document.
@@ -192,7 +192,7 @@ A counter example is the use of SCTP over UDP as specified in
 expecting correct CRC32c checksums in SCTP packets might impact the
 communication.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
-indicate that it is fine to use a specific alternate error detection mechanism
+indicate that it is fine to use a specific alternate error detection method
 for accepting SCTP packets with an incorrect CRC32c value of zero.</t>
 <t>An end point willing to accept SCTP packets with an incorrect checksum of
 zero <bcp14>MUST</bcp14> include the Zero Checksum Acceptable Chunk Parameter
@@ -290,17 +290,17 @@ on the socket.</t>
 Possible values include:</t>
 <dl>
 <dt>SCTP_EDMID_NONE:</dt>
-<dd><t>Disable the use of alternate error detection mechanisms. This means that
-all SCTP packets being sent have a correct CRC32c.</t></dd>
+<dd><t>Disable the use of alternate error detection method.
+This means that all SCTP packets being sent have a correct CRC32c.</t></dd>
 <dt>SCTP_EDMID_LOWER_LAYER_DTLS:</dt>
-<dd><t>Use the alternate error detection mechanisms described in
+<dd><t>Use the alternate error detection method described in
 <xref target='edm_sctp_over_dlts'/>.</t></dd>
 </dl>
 <t>An implementation might only send packets with an incorrect checksum of zero,
-if the alternate error detection mechanism announced by the peer is also enabled
+if the alternate error detection method announced by the peer is also enabled
 locally via this socket option.</t>
 <t>The default for this socket option is that the use of alternate error
-detection mechanisms is disabled.</t>
+detection methods is disabled.</t>
 </section>
 </section>
 
@@ -332,8 +332,8 @@ Documentation for a new error detection method <bcp14>MUST</bcp14> contain the
 following information:</t>
 <ol>
 <li><t>A name of an alternate error detection method.</t></li>
-<li><t>A reference describing the alternate detection method, in particular
-any method specific constraints.</t></li>
+<li><t>A reference describing the alternate error detection method, in
+particular any method specific constraints.</t></li>
 </ol>
 <t>IANA is requested to use the following as the initial contents of the
 registry:</t>
