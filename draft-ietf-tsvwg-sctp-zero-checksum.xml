@@ -232,7 +232,7 @@ it <bcp14>MUST</bcp14> include a correct CRC32c checksum in the response
 packet.</t>
 <t>An SCTP end point <bcp14>MAY</bcp14> only send packets with an incorrect
 checksum of zero, if the upper layer allowed the use of the alternate error
-detection method which was announced by the peer.</t>
+detection method that was announced by the peer.</t>
 </section>
 
 <section>
