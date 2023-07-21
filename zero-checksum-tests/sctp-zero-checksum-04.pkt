@@ -35,20 +35,21 @@
 +0.0 `sysctl -w net.inet.sctp.pktdrop_enable=0`
 +0.0 socket(..., SOCK_STREAM, IPPROTO_SCTP) = 3
 +0.0 fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
-+0.0 setsockopt(3, IPPROTO_SCTP, SCTP_ACCEPT_ZERO_CHECKSUM, [1], 4) = 0
++0.0 bind(3, ..., ...) = 0
++0.0 setsockopt(3, IPPROTO_SCTP, SCTP_ACCEPT_ZERO_CHECKSUM, [SCTP_EDMID_LOWER_LAYER_DTLS], 4) = 0
 +0.0 connect(3, ..., ...) = -1 EINPROGRESS (Operation now in progress)
 +0.0 > sctp: INIT[flgs=0, tag=1, a_rwnd=..., os=..., is=..., tsn=1,
-                  ZERO_CHECKSUM_ACCEPTABLE[],
+                  ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
                   SUPPORTED_ADDRESS_TYPES[types=[IPv4]]]
-+0.0 setsockopt(3, IPPROTO_SCTP, SCTP_ACCEPT_ZERO_CHECKSUM, [0], 4) = 0
++0.0 setsockopt(3, IPPROTO_SCTP, SCTP_ACCEPT_ZERO_CHECKSUM, [SCTP_EDMID_NONE], 4) = 0
 +1.0 > sctp: INIT[flgs=0, tag=1, a_rwnd=..., os=..., is=..., tsn=1,
-                  ZERO_CHECKSUM_ACCEPTABLE[],
+                  ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
                   SUPPORTED_ADDRESS_TYPES[types=[IPv4]]]
 +2.0 > sctp: INIT[flgs=0, tag=1, a_rwnd=..., os=..., is=..., tsn=1,
-                  ZERO_CHECKSUM_ACCEPTABLE[],
+                  ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
                   SUPPORTED_ADDRESS_TYPES[types=[IPv4]]]
 +0.0 < sctp(zero_checksum): INIT_ACK[flgs=0, tag=2, a_rwnd=1500, os=1, is=1, tsn=1,
-                                     ZERO_CHECKSUM_ACCEPTABLE[],
+                                     ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
                                      STATE_COOKIE[len=4, val=...]]
 +0.0 > sctp: COOKIE_ECHO[flgs=0, len=4, val=...]
 // Right now FreeBSD has a bug in computing the T1-cookie timer.
