@@ -188,9 +188,9 @@ CRC32c checksum algorithm provides.</t>
 DTLS as described in <xref target="RFC8261"/> (as used in the WebRTC context).
 A counter example is the use of SCTP over UDP as specified in
 <xref target="RFC6951"/>.</t>
-<t>An incorrect zero checksum <bcp14>MUST NOT</bcp14> be used if middle boxes
-expecting correct CRC32c checksums in SCTP packets might impact the
-communication.</t>
+<t>If middle boxes expecting correct CRC32c checksums in SCTP packets might
+impact the communication, an incorrect zero checksum <bcp14>MUST NOT</bcp14>
+be used.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
 indicate that it is fine to use a specific alternate error detection method
 for accepting SCTP packets with an incorrect CRC32c value of zero.</t>
@@ -268,7 +268,7 @@ no risk in interferring with using zero as an incorrect checksum.
 There are no additional error detection specific constraints on packets
 when using DTLS encapsulation.</t>
 <t>IANA is requested to assign the Error Detection Method Identifier
-of 1 (suggested) for this method.</t>
+of 1 for this method.</t>
 </section>
 
 <section>
@@ -340,11 +340,12 @@ registry:</t>
 <table>
 <name>Initial Contents of the "Error Detection Method" registry</name>
 <thead>
-<tr><th>ID Value</th>      <th>Error Detection Method</th> <th>Reference</th></tr>
+<tr><th>ID Value</th>       <th>Error Detection Method</th> <th>Reference</th></tr>
 </thead>
 <tbody>
-<tr><td>0 (suggested)</td> <td>Reserved</td>               <td>[RFCXXXX]</td></tr>
-<tr><td>1 (suggested)</td> <td>SCTP over DTLS</td>         <td>[RFCXXXX]</td></tr>
+<tr><td>0             </td> <td>Reserved</td>               <td>[RFCXXXX]</td></tr>
+<tr><td>1             </td> <td>SCTP over DTLS</td>         <td>[RFCXXXX]</td></tr>
+<tr><td>2 - 4294967295</td> <td>Unassigned</td>             <td>         </td></tr>
 </tbody>
 </table>
 </section>
@@ -381,6 +382,7 @@ registry:</t>
 <t>The authors wish to thank
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Mike Heard"/>,
+<contact fullname="Peter Lei"/>,
 <contact fullname="Nils Ohlmeier"/>,
 <contact fullname="Claudio Porfiri"/>, and
 <contact fullname="Magnus Westerlund"/>
