@@ -10,14 +10,14 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-ietf-tsvwg-sctp-zero-checksum-03"
+     docName="draft-ietf-tsvwg-sctp-zero-checksum-04-to-be"
      version="3">
 
 <front>
 <title abbrev='Zero Checksum for SCTP'>
 Zero Checksum for the Stream Control Transmission Protocol
 </title>
-<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-sctp-zero-checksum-03"/>
+<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-sctp-zero-checksum-04-to-be"/>
 
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
   <organization abbrev='Münster Univ. of Appl. Sciences'>
