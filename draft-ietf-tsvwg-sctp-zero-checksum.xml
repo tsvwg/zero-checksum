@@ -78,12 +78,14 @@ Zero Checksum for the Stream Control Transmission Protocol
 <abstract>
 <t>The Stream Control Transmission Protocol (SCTP) uses a 32-bit checksum in
 the common header of each packet to provide some level of data integrity.
-When some method used by SCTP provides already the same or a higher level of
+If another method used by SCTP provides already the same or a higher level of
 data integrity, computing this checksum does not provide any additional
-protection, but does require computing resources.
-This document provides a simple extension to SCTP allowing to save these
-computing resources by using the constant 0 as a checksum in a backwards
-compatible way.</t>
+protection, but does require computing resources.</t>
+<t>This document provides a simple extension to SCTP allowing to save these
+computing resources by using zero as the checksum in a backwards compatible
+way.
+It also defines how this feature can be used when SCTP packets are encapsulated
+in Datagram Transport Layer Security (DTLS) packets.</t>
 </abstract>
 </front>
 
@@ -92,11 +94,7 @@ compatible way.</t>
 <name>Introduction</name>
 <t>SCTP as specified in <xref target="RFC9260"/> uses a CRC32c to provide some
 level of data integrity.
-The CRC32c is computed based on the SCTP common header and the chunks contained
-in the packet.
-In particular, the computation of the CRC32c does not involve a pseudo header
-for IPv4 or IPv6 like the computation of the TCP or UDP checksum.</t>
-<t>When using, for example, Datagram Transport Layer Security (DTLS) as the
+When using, for example, Datagram Transport Layer Security (DTLS) as the
 lower layer for SCTP as specified in <xref target="RFC8261"/>, using the CRC32c
 does not provide any additional protection over the one already provided by
 DTLS.
@@ -104,9 +102,9 @@ However, computing the CRC32c at the sender and receiver side does consume
 computational resources for no benefit.
 This is particularly important for end points that are computational-limited
 and use SCTP encapsulated in DTLS.</t>
-<t>The extension described in this document allows an SCTP end point to
-declare that it accepts SCTP packets with a checksum of zero when using
-a specified alternate error detection method.
+<t>The extension described in this document allows an SCTP end point to declare
+that it accepts SCTP packets with a checksum of zero when using a specific
+alternate error detection method.
 This declaration happens during the setup of the SCTP association and allows
 end points supporting this extension to be interoperable with end points not
 supporting the extension described in this document.
@@ -124,6 +122,79 @@ need to implement the CRC32c checksum algorithm.</t>
 be interpreted as described in
 BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when,
 they appear in all capitals, as shown here.</t>
+</section>
+
+<section anchor='alterate_error_detection_methods'>
+<name>Alternate Error Detection Methods</name>
+<t>SCTP uses a CRC32c to provide some level of data integrity.
+The CRC32c is computed based on the SCTP common header and the chunks contained
+in the packet.
+In particular, the computation of the CRC32c does not involve a pseudo header
+for IPv4 or IPv6 like the computation of the TCP or UDP checksum.</t>
+<t>Zero is a valid result of the CRC32c algorithm.
+For example, the following figure depicts an SCTP packet containing a minimal
+INIT chunk with a correct CRC32c or zero.</t>
+<figure>
+<name>SCTP Packet with a correct CRC32c of zero</name>
+<artwork align='left'>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Source Port Number = 5001   |Destination Port Number = 5001 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     Verification Tag = 0                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Checksum = 0                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type = 1    |Chunk Flags = 0|       Chunk Length = 20       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   Initiate Tag = 0xFCB75CCA                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|       Advertised Receiver Window Credit (a_rwnd) = 1500       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Number of Outbound Streams = 1 | Number of Inbound Streams = 1 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Initial TSN = 0                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+</figure>
+
+<t>Using SCTP in combination with other mechanisms or protocol extensions might
+provide an equal or better level of data integrity protection than the one
+provided by using the CRC32c algorithm.
+Such alternate error detection methods have two requirements:</t>
+<ol>
+<li><t>An alternate error detection method <bcp14>MUST</bcp14> provide an equal
+or better level of data integrity than the one provided by using the CRC32c
+algorithm.
+This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
+constraints.</t></li>
+<li><t>An alternate error detection method <bcp14>MUST NOT</bcp14> interfere
+with middle boxes expecting correct CRC32c checksums.</t></li>
+</ol>
+<t>One example fulfilling the first requirement is using DTLS as the lower layer
+of SCTP as specified in <xref target="RFC8261"/>.
+Another example is using SCTP Authentication as specified in
+<xref target="RFC4895"/>.
+Of course, this only applies to all SCTP packets having an AUTH chunk as its
+first chunk.
+The use of SCTP over UDP as specified in <xref target="RFC6951"/> is not
+fulfilling the first requirement.
+As using DTLS as the lower layer of SCTP as specified in <xref target="RFC8261"/>
+also fulfills the second requirement, it can be used as an alternate error
+detection method (see <xref target="edm_sctp_over_dlts"/>).</t>
+<t>If an alternate error detection method is available, the computation of the
+CRC32c checksum consumes computational resources without providing any benefit.
+To avoid this, an SCTP end point could be willing to accept SCTP packets with
+an incorrect CRC32c checksum value of zero in addition to SCTP packets with
+correct CRC32c checksum values.</t>
+<t>Because zero is a valid result of the CRC32c algorithm, a receiver of an
+SCTP packet containing a checksum value of zero cannot determine whether the
+sender included an incorrect CRC32c of zero to reduce the CPU cost or the
+result of the CRC32c computation was actually zero.
+However, if the receiver is willing to use an alternate error detection method,
+this ambiguity is irrelevant, since the receiver is fine with not using the
+CRC32c to protect incoming packets.</t>
 </section>
 
 <section>
@@ -164,14 +235,14 @@ the sender of this parameter is willing to use for received packets.</t>
 Big Endian.</t>
 <t>The Zero Checksum Acceptable Chunk Parameter <bcp14>MAY</bcp14> appear
 in INIT and INIT ACK chunks and <bcp14>MUST NOT</bcp14> appear in any other
-chunk.</t>
-The Parameter <bcp14>MUST NOT</bcp14> appear more than once in any chunk.
+chunk.
+The Parameter <bcp14>MUST NOT</bcp14> appear more than once in any chunk.</t>
 <t>If an end point not supporting the extension described in this document
 receives this parameter in an INIT or INIT ACK chunk, it is
 <bcp14>REQUIRED</bcp14> to skip this parameter and continue to process further
 parameters in the chunk.
-This behavior is required by <xref target="RFC9260"/> because
-the highest-order two bits of the Type are '10'.</t>
+This behavior is specified by <xref target="RFC9260"/> because the highest-order
+two bits of the Type are '10'.</t>
 </section>
 
 <section>
@@ -179,44 +250,33 @@ the highest-order two bits of the Type are '10'.</t>
 
 <section>
 <name>Declaration of Feature Support</name>
-<t>If some alternate error detection method provides an equal or better level
-of data integrity protection than the one provided by using the CRC32c
-algorithm, the computation of the CRC32c checksum consumes computational
-resources without providing any benefit.
-To avoid this, an SCTP end point could be willing to accept SCTP packets with
-an incorrect CRC32c checksum value of zero in addition to SCTP packets with
-correct CRC32c checksum values.
-An SCTP endpoint <bcp14>MUST NOT</bcp14> be willing to accept SCTP packets
-with an incorrect CRC32c checksum value of zero, if the alternate error
-detection method does not provide at least the level of data integrity provided
-by the CRC32c checksum.</t>
-<t>One example of an alternate error detection method is the use of SCTP over
-DTLS as described in <xref target="RFC8261"/> (as used in the WebRTC context).
-An example where this is not allowed is the use of SCTP over UDP as specified
-in <xref target="RFC6951"/>.</t>
-<t>If middle boxes expecting correct CRC32c checksums in SCTP packets might
-impact the communication, an incorrect zero checksum <bcp14>MUST NOT</bcp14>
-be used.</t>
+<t>An end point willing to accept SCTP packets with an incorrect checksum of
+zero <bcp14>MUST</bcp14> include the Zero Checksum Acceptable Chunk Parameter
+indicating the alternate error detection method it is willing to use in the
+INIT or INIT ACK chunk it sends.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
 indicate that it is fine to use a specific alternate error detection method
 for accepting SCTP packets with an incorrect CRC32c value of zero.</t>
-<t>An end point willing to accept SCTP packets with an incorrect checksum of
-zero <bcp14>MUST</bcp14> include the Zero Checksum Acceptable Chunk Parameter
-indicating the alternate error detection method in the INIT or INIT ACK chunk
-it sends.</t>
 </section>
 
-<section>
+<section anchor='sender_side_considerations'>
 <name>Sender Side Considerations</name>
-<t>If an end point has received an INIT or INIT ACK chunk containing a Zero
-Checksum Acceptable Chunk Parameter indicating an alternate error detection
+<t>An SCTP end point cannot just use an incorrect CRC32c checksum value of zero
+for all SCTP packets it sends.
+Therefore, the following restrictions apply:</t>
+<ol>
+<li><t>If an end point has not received an INIT or INIT ACK chunk containing a
+Zero Checksum Acceptable Chunk Parameter indicating an alternate error detection
 method it supports from its peer during the association setup,
-it <bcp14>SHOULD</bcp14> use zero as the checksum for all packets sent in this
-association with the following four exceptions:</t>
-<ul>
-<li><t>When an end point sends a packet containing an INIT chunk, it
-<bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
-the INIT chunk.</t></li>
+it <bcp14>MUST</bcp14> use a correct CRC32c checksum.
+In particular, when an end point</t>
+<ol type='%c.'>
+<li><t>sends a packet containing an INIT chunk, it <bcp14>MUST</bcp14> include
+a correct CRC32c checksum in the packet containing the INIT chunk.</t></li>
+<li><t>responds to an "Out of the Blue" (OOTB) SCTP packet, it
+<bcp14>MUST</bcp14> include a correct CRC32c checksum in the response
+packet.</t></li>
+</ol></li>
 <li><t>When an end point sends a packet containing a COOKIE ECHO chunk, it
 <bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
 the COOKIE ECHO chunk.</t></li>
@@ -227,41 +287,31 @@ the ASCONF chunk.</t></li>
 <li><t>Alternate error detection methods might have some additional conditions
 requiring that the sender <bcp14>MUST</bcp14> include a correct CRC32c checksum
 in the packet.</t></li>
-</ul>
-<t>The first exception allows backwards compatibility and the second and
-third exception allow a simpler implementation of the extension defined in this
-document.
-The last condition covers alternate error detection method specific
+</ol>
+<t>The first restriction allows backwards compatibility and the second and
+third restriction allow a simpler implementation of the extension defined in
+this document.
+The last restriction covers alternate error detection method specific
 constraints.</t>
-<t>When an end point responds to an "Out of the Blue" (OOTB) SCTP packet,
-it <bcp14>MUST</bcp14> include a correct CRC32c checksum in the response
-packet.</t>
 <t>An SCTP end point <bcp14>MAY</bcp14> only send packets with an incorrect
 checksum of zero, if the upper layer allowed the use of the alternate error
 detection method that was announced by the peer.</t>
+<t>If none of the above restrictions apply, an end point <bcp14>SHOULD</bcp14>
+use zero as the checksum when sending an SCTP packet.</t>
 </section>
 
 <section>
 <name>Receiver Side Considerations</name>
-<t>Zero is a valid result of the CRC32c algorithm.
-<!-- Maybe present an example; would also be a good additional test case. -->
-Therefore, a receiver of an SCTP packet fulfilling the constraints of the
-alternate error detection method and containing a checksum value of zero
-cannot determine whether the sender included an incorrect CRC32c of zero to
-reduce the CPU cost or the result of the CRC32c computation was actually zero.
-However, if the receiver has sent the Zero Checksum Acceptable Chunk Parameter
-during the handshake, this ambiguity is irrelevant, since the receiver is fine
-with not using the CRC32c to protect incoming packets fulfilling the constraints
-of the alternate error detection method.</t>
 <t>If an end point has sent the Zero Checksum Acceptable Chunk Parameter
 indicating the support of an alternate error detection method in an INIT or
 INIT ACK chunk, it <bcp14>MUST</bcp14> accept SCTP packets fulfilling the
 requirements of the announced alternate error detection method using
 an incorrect checksum value of zero in addition to SCTP packets containing the
 correct CRC32c checksum value for this association.</t>
-<t>An SCTP implementation <bcp14>MAY</bcp14> process OOTB SCTP packets having
-an incorrect zero checksum in addition to OOTB packets with a correct CRC32c
-checksum.</t>
+<t>In addition to processing OOTB packets with a correct CRC32c checksum as
+specified in <xref target='RFC9260'/>, an SCTP implementation
+<bcp14>MAY</bcp14> also process OOTB packets having an incorrect zero checksum.
+Doing so might result in faster SCTP association failure detection.</t>
 </section>
 </section>
 
@@ -332,14 +382,20 @@ SCTP:</t>
 </table>
 <t>Furthermore, IANA is requested to establish a new "Error Detection Method"
 registry for SCTP.
-The assignment of new error detection methods is done through a First Come First
-Served policy as defined in <xref target='RFC8126'/>. 
+The assignment of new error detection methods is done through the RFC Required
+policy as defined in <xref target='RFC8126'/>. 
 Documentation for a new error detection method <bcp14>MUST</bcp14> contain the
 following information:</t>
 <ol>
 <li><t>A name of an alternate error detection method.</t></li>
-<li><t>A reference describing the alternate error detection method, in
-particular any method specific constraints.</t></li>
+<li><t>A reference to an RFC describing:</t>
+<ol type='(%c)'>
+<li><t>the alternate error detection method,</t></li>
+<li><t>any method specific constraints referred to in the fourth exception in
+<xref target='sender_side_considerations'/>, and</t></li>
+<li><t>why using the alternate error detection method does not interfere
+with middle boxes expecting correct CRC32c checksums.</t></li>
+</ol></li>
 </ol>
 <t>IANA is requested to use the following as the initial contents of the
 registry:</t>
@@ -378,6 +434,7 @@ registry:</t>
 
 <references>
 <name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6951.xml"/>
 </references>
