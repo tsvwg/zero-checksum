@@ -136,7 +136,7 @@ For example, the following figure depicts an SCTP packet containing a minimal
 INIT chunk with a correct CRC32c or zero.</t>
 <figure>
 <name>SCTP Packet with a correct CRC32c of zero</name>
-<artwork align='left'>
+<artwork align='center'>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -203,7 +203,7 @@ CRC32c to protect incoming packets.</t>
 following figure.</t>
 <figure>
 <name>Zero Checksum Acceptable Chunk Parameter</name>
-<artwork align="left">
+<artwork align="center">
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   Type = 0x8001 (suggested)   |          Length = 8           |
@@ -332,7 +332,11 @@ of 1 for this method.</t>
 <t>This section describes how the socket API defined in
 <xref target='RFC6458'/> needs to be extended to provide a way for the
 application to control the acceptance of a zero checksum.</t>
-<t>Please note that this section is informational only.</t>
+<t>A 'Socket API Considerations' section is contained in all SCTP related
+specifications published after <xref target='RFC6458'/> describing an extension
+for which implementations using the socket API as specified in
+<xref target='RFC6458'/> would require some extension of the socket API.
+Please note that this section is informational only.</t>
 <t>A socket API implementation based on <xref target='RFC6458'/> is extended by
 supporting one new write-only IPPROTO_SCTP-level socket option.</t>
 
