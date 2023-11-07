@@ -180,8 +180,7 @@ Another example is using SCTP Authentication as specified in
 <xref target="RFC4895"/>.
 Of course, this only applies to all SCTP packets having an AUTH chunk as its
 first chunk.
-The use of SCTP over UDP as specified in <xref target="RFC6951"/> is not
-fulfilling the first requirement.
+However, using SCTP Authentication does not fulfill the second requirement.
 Since using DTLS as the lower layer of SCTP as specified in
 <xref target="RFC8261"/> also fulfills the second requirement, it can be used
 as an alternate error detection method
@@ -390,15 +389,23 @@ SCTP:</t>
 </table>
 <t>Furthermore, IANA is requested to establish a new "Error Detection Method"
 registry for SCTP.
-The assignment of new error detection methods is done through the RFC Required
-policy as defined in <xref target='RFC8126'/>. 
+<!-- This is what Magnus prefers. -->
+The assignment of new error detection methods is done through the Specification
+Required policy as defined in <xref target='RFC8126'/>.
+<!-- Gorry currently prefers:
+The assignment of new error detection methods is done through the IETF Review
+policy as defined in <xref target='RFC8126'/>.
+-->
 Documentation for a new error detection method <bcp14>MUST</bcp14> contain the
 following information:</t>
 <ol>
 <li><t>A name of an alternate error detection method.</t></li>
-<li><t>A reference to an RFC describing:</t>
+<li><t>A reference to a specification describing:</t>
 <ol type='(%c)'>
 <li><t>the alternate error detection method,</t></li>
+<li><t>why the alternate error detection method provides an equal or better
+level of data integrity protection than the one provided by using the CRC32c
+checksum,</t></li>
 <li><t>any method specific constraints referred to in the fourth exception in
 <xref target='sender_side_considerations'/>, and</t></li>
 <li><t>why using the alternate error detection method does not interfere
@@ -445,7 +452,6 @@ registry:</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6951.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9293.xml"/>
 </references>
 </references>
