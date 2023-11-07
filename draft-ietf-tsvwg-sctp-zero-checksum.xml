@@ -80,7 +80,7 @@ Zero Checksum for the Stream Control Transmission Protocol
 the common header of each packet to provide some level of data integrity.
 If another method used by SCTP provides already the same or a higher level of
 data integrity, computing this checksum does not provide any additional
-protection, but does require computing resources.</t>
+protection, but does consume computing resources.</t>
 <t>This document provides a simple extension to SCTP allowing to save these
 computing resources by using zero as the checksum in a backwards compatible
 way.
@@ -92,14 +92,14 @@ in Datagram Transport Layer Security (DTLS) packets.</t>
 <middle>
 <section>
 <name>Introduction</name>
-<t>SCTP as specified in <xref target="RFC9260"/> uses a CRC32c to provide some
-level of data integrity.
+<t>SCTP as specified in <xref target="RFC9260"/> uses a CRC32c checksum to
+provide some level of data integrity.
 When using, for example, Datagram Transport Layer Security (DTLS) as the
 lower layer for SCTP as specified in <xref target="RFC8261"/>, using the CRC32c
-does not provide any additional protection over the one already provided by
-DTLS.
-However, computing the CRC32c at the sender and receiver side does consume
-computational resources for no benefit.
+checksum does not provide any additional protection over the one already
+provided by DTLS.
+However, computing the CRC32c checksum  at the sender and receiver side does
+consume computational resources for no benefit.
 This is particularly important for end points that are computational-limited
 and use SCTP encapsulated in DTLS.</t>
 <t>The extension described in this document allows an SCTP end point to declare
@@ -126,16 +126,18 @@ they appear in all capitals, as shown here.</t>
 
 <section anchor='alterate_error_detection_methods'>
 <name>Alternate Error Detection Methods</name>
-<t>SCTP uses a CRC32c to provide some level of data integrity.
-The CRC32c is computed based on the SCTP common header and the chunks contained
-in the packet.
-In particular, the computation of the CRC32c does not involve a pseudo header
-for IPv4 or IPv6 like the computation of the TCP or UDP checksum.</t>
-<t>Zero is a valid result of the CRC32c algorithm.
+<t>SCTP uses a CRC32c checksum to provide some level of data integrity.
+The CRC32c checksum is computed based on the SCTP common header and the chunks
+contained in the packet.
+In particular, the computation of the CRC32c checksum does not involve a pseudo
+header for IPv4 or IPv6 like the computation of the TCP checksum, as specified
+in <xref target='RFC9293'/>, or the UDP checksum, as specified in
+<xref target='RFC0768'/>.</t>
+<t>Zero is a valid result of the CRC32c checksum algorithm.
 For example, the following figure depicts an SCTP packet containing a minimal
-INIT chunk with a correct CRC32c or zero.</t>
+INIT chunk with a correct CRC32c checksum of zero.</t>
 <figure>
-<name>SCTP Packet with a correct CRC32c of zero</name>
+<name>SCTP Packet with a correct CRC32c checksum of zero</name>
 <artwork align='center'>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -161,12 +163,12 @@ INIT chunk with a correct CRC32c or zero.</t>
 
 <t>Using SCTP in combination with other mechanisms or protocol extensions might
 provide an equal or better level of data integrity protection than the one
-provided by using the CRC32c algorithm.
+provided by using the CRC32c checksum algorithm.
 Such alternate error detection methods have two requirements:</t>
 <ol>
 <li><t>An alternate error detection method <bcp14>MUST</bcp14> provide an equal
 or better level of data integrity than the one provided by using the CRC32c
-algorithm.
+checksum algorithm.
 This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
 constraints.</t></li>
 <li><t>An alternate error detection method <bcp14>MUST NOT</bcp14> interfere
@@ -180,21 +182,22 @@ Of course, this only applies to all SCTP packets having an AUTH chunk as its
 first chunk.
 The use of SCTP over UDP as specified in <xref target="RFC6951"/> is not
 fulfilling the first requirement.
-As using DTLS as the lower layer of SCTP as specified in <xref target="RFC8261"/>
-also fulfills the second requirement, it can be used as an alternate error
-detection method (see <xref target="edm_sctp_over_dlts"/>).</t>
+Since using DTLS as the lower layer of SCTP as specified in
+<xref target="RFC8261"/> also fulfills the second requirement, it can be used
+as an alternate error detection method
+(see <xref target="edm_sctp_over_dlts"/>).</t>
 <t>If an alternate error detection method is available, the computation of the
 CRC32c checksum consumes computational resources without providing any benefit.
 To avoid this, an SCTP end point could be willing to accept SCTP packets with
 an incorrect CRC32c checksum value of zero in addition to SCTP packets with
 correct CRC32c checksum values.</t>
-<t>Because zero is a valid result of the CRC32c algorithm, a receiver of an
-SCTP packet containing a checksum value of zero cannot determine whether the
-sender included an incorrect CRC32c of zero to reduce the CPU cost or the
-result of the CRC32c computation was actually zero.
+<t>Because zero is a valid result of the CRC32c checksum algorithm, a receiver
+of an SCTP packet containing a checksum value of zero cannot determine whether
+the sender included an incorrect CRC32c checksum of zero to reduce the CPU cost
+or the result of the CRC32c checksum computation was actually zero.
 However, if the receiver is willing to use an alternate error detection method,
 this ambiguity is irrelevant, since the receiver is fine with not using the
-CRC32c to protect incoming packets.</t>
+CRC32c checksum to protect incoming packets.</t>
 </section>
 
 <section>
@@ -256,14 +259,14 @@ indicating the alternate error detection method it is willing to use in the
 INIT or INIT ACK chunk it sends.</t>
 <t>An SCTP implementation <bcp14>MAY</bcp14> also require the upper layer to
 indicate that it is fine to use a specific alternate error detection method
-for accepting SCTP packets with an incorrect CRC32c value of zero.</t>
+for accepting SCTP packets with an incorrect CRC32c checksum value of zero.</t>
 </section>
 
 <section anchor='sender_side_considerations'>
 <name>Sender Side Considerations</name>
 <t>An SCTP end point cannot just use an incorrect CRC32c checksum value of zero
 for all SCTP packets it sends.
-Therefore, the following restrictions apply:</t>
+The following restrictions apply:</t>
 <ol>
 <li><t>If an end point has not received an INIT or INIT ACK chunk containing a
 Zero Checksum Acceptable Chunk Parameter indicating an alternate error detection
@@ -318,7 +321,7 @@ Doing so might result in faster SCTP association failure detection.</t>
 <section anchor='edm_sctp_over_dlts'>
 <name>Error Detection via SCTP over DTLS</name>
 <t>Using SCTP over DTLS as specified in <xref target="RFC8261"/> provides
-a stronger error detection method than using the CRC32c.
+a stronger error detection method than using the CRC32c checksum algorithm.
 Since middle boxes will not observe the unencrypted SCTP packet, there is
 no risk in interferring with using zero as an incorrect checksum.
 There are no additional error detection specific constraints on packets
@@ -342,7 +345,7 @@ supporting one new write-only IPPROTO_SCTP-level socket option.</t>
 
 <section>
 <name>Set Accepting a Zero Checksum (SCTP_ACCEPT_ZERO_CHECKSUM)</name>
-<t>This IPPROTO_SCTP-level socket option with name SCTP_ACCEPT_ZERO_CHECKSUM
+<t>This IPPROTO_SCTP-level socket option with the name SCTP_ACCEPT_ZERO_CHECKSUM
 can be used to control the acceptance of a zero checksum.
 It is a write-only socket option and applies only to future SCTP associations
 on the socket.</t>
@@ -351,7 +354,8 @@ Possible values include:</t>
 <dl>
 <dt>SCTP_EDMID_NONE:</dt>
 <dd><t>Disable the use of alternate error detection method.
-This means that all SCTP packets being sent have a correct CRC32c.</t></dd>
+This means that all SCTP packets being sent have a correct CRC32c checksum
+value.</t></dd>
 <dt>SCTP_EDMID_LOWER_LAYER_DTLS:</dt>
 <dd><t>Use the alternate error detection method described in
 <xref target='edm_sctp_over_dlts'/>.</t></dd>
@@ -438,9 +442,11 @@ registry:</t>
 
 <references>
 <name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6951.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9293.xml"/>
 </references>
 </references>
 
@@ -451,7 +457,8 @@ registry:</t>
 <contact fullname="Mike Heard"/>,
 <contact fullname="Peter Lei"/>,
 <contact fullname="Nils Ohlmeier"/>,
-<contact fullname="Claudio Porfiri"/>, and
+<contact fullname="Claudio Porfiri"/>,
+<contact fullname="Timo Völker"/>, and
 <contact fullname="Magnus Westerlund"/>
 for their invaluable comments.</t>
 </section>
