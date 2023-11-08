@@ -164,23 +164,31 @@ INIT chunk with a correct CRC32c checksum of zero.</t>
 <t>Using SCTP in combination with other mechanisms or protocol extensions might
 provide an equal or better level of data integrity protection than the one
 provided by using the CRC32c checksum algorithm.
-Such alternate error detection methods have two requirements:</t>
+When using such alternate error detection methods, the SCTP common header
+containing the 32-bit checksum field might or might not be visible to middle
+boxes on the paths between the two end points.</t>
+<t>Alternate error detection methods have two requirements:</t>
 <ol>
 <li><t>An alternate error detection method <bcp14>MUST</bcp14> provide an equal
 or better level of data integrity than the one provided by using the CRC32c
 checksum algorithm.
 This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
 constraints.</t></li>
-<li><t>An alternate error detection method <bcp14>MUST NOT</bcp14> interfere
-with middle boxes expecting correct CRC32c checksums.</t></li>
+<li><t>Using an alternate error detection method <bcp14>MUST NOT</bcp14>
+result in a path failure for more than a couple of round trip times (RTT)
+due to middle boxes on the path expecting correct CRC32c checksums.</t></li>
 </ol>
+<t>To fulfill the second requirement, alternate error detection methods
+<bcp14>MAY</bcp14> use a heuristic to detect the existence of such middle boxes
+and use correct CRC32c checksums on these affected paths.</t>
 <t>One example fulfilling the first requirement is using DTLS as the lower layer
 of SCTP as specified in <xref target="RFC8261"/>.
 Another example is using SCTP Authentication as specified in
 <xref target="RFC4895"/>.
 Of course, this only applies to all SCTP packets having an AUTH chunk as its
 first chunk.
-However, using SCTP Authentication does not fulfill the second requirement.
+However, using SCTP Authentication without any heuristic does not fulfill the
+second requirement.
 Since using DTLS as the lower layer of SCTP as specified in
 <xref target="RFC8261"/> also fulfills the second requirement, it can be used
 as an alternate error detection method
@@ -408,8 +416,11 @@ level of data integrity protection than the one provided by using the CRC32c
 checksum,</t></li>
 <li><t>any method specific constraints referred to in the fourth exception in
 <xref target='sender_side_considerations'/>, and</t></li>
-<li><t>why using the alternate error detection method does not interfere
-with middle boxes expecting correct CRC32c checksums.</t></li>
+<li><t>why using the alternate error detection method does not result in
+path failures due to middle boxes expecting correct CRC32c checksums for more
+than a couple of RTTs.
+In case the alternate error detection method uses a heuristic for detecting
+such middle boxes, this heuristic needs to be described.</t></li>
 </ol></li>
 </ol>
 <t>IANA is requested to use the following as the initial contents of the
@@ -425,6 +436,11 @@ registry:</t>
 <tr><td>2 - 4294967295</td> <td>Unassigned</td>             <td>         </td></tr>
 </tbody>
 </table>
+<t>A Designated Expert (DE) is expected to ascertain the existence of suitable
+documentation (a specification) as described in <xref target='RFC8126'/> and to
+verify that the document is permanently and publicly available.
+Furthermore, the DE is expected to ensure that the above four points have been
+addressed in an appropriate way.</t>
 </section>
 
 <section>
