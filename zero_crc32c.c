@@ -132,7 +132,8 @@ struct sctp_init_packet {
 };
 
 int
-main(void) {
+main(void)
+{
 	struct sctp_init_packet init;
 	uint32_t initiate_tag;
 
