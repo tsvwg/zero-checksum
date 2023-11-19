@@ -175,7 +175,7 @@ checksum algorithm.
 This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
 constraints.</t></li>
 <li><t>Using an alternate error detection method <bcp14>MUST NOT</bcp14>
-result in a path failure for more than a couple of round trip times (RTT)
+result in a path failure for more than two retransmission timeouts (RTO)
 due to middleboxes on the path expecting correct CRC32c checksums.</t></li>
 </ol>
 <t>To fulfill the second requirement, alternate error detection methods
@@ -418,7 +418,7 @@ checksum,</t></li>
 <xref target='sender_side_considerations'/>, and</t></li>
 <li><t>why using the alternate error detection method does not result in
 path failures due to middleboxes expecting correct CRC32c checksums for more
-than a couple of RTTs.
+than two RTOs.
 In case the alternate error detection method uses a heuristic for detecting
 such middleboxes, this heuristic needs to be described.</t></li>
 </ol></li>
