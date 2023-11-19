@@ -165,8 +165,8 @@ INIT chunk with a correct CRC32c checksum of zero.</t>
 provide an equal or better level of data integrity protection than the one
 provided by using the CRC32c checksum algorithm.
 When using such alternate error detection methods, the SCTP common header
-containing the 32-bit checksum field might or might not be visible to middle
-boxes on the paths between the two end points.</t>
+containing the 32-bit checksum field might or might not be visible to
+middleboxes on the paths between the two end points.</t>
 <t>Alternate error detection methods have two requirements:</t>
 <ol>
 <li><t>An alternate error detection method <bcp14>MUST</bcp14> provide an equal
