@@ -124,7 +124,7 @@ BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when,
 they appear in all capitals, as shown here.</t>
 </section>
 
-<section anchor='alterate_error_detection_methods'>
+<section anchor='alternate_error_detection_methods'>
 <name>Alternate Error Detection Methods</name>
 <t>SCTP uses a CRC32c checksum to provide some level of data integrity.
 The CRC32c checksum is computed based on the SCTP common header and the chunks
@@ -176,10 +176,10 @@ This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
 constraints.</t></li>
 <li><t>Using an alternate error detection method <bcp14>MUST NOT</bcp14>
 result in a path failure for more than a couple of round trip times (RTT)
-due to middle boxes on the path expecting correct CRC32c checksums.</t></li>
+due to middleboxes on the path expecting correct CRC32c checksums.</t></li>
 </ol>
 <t>To fulfill the second requirement, alternate error detection methods
-<bcp14>MAY</bcp14> use a heuristic to detect the existence of such middle boxes
+<bcp14>MAY</bcp14> use a heuristic to detect the existence of such middleboxes
 and use correct CRC32c checksums on these affected paths.</t>
 <t>One example fulfilling the first requirement is using DTLS as the lower layer
 of SCTP as specified in <xref target="RFC8261"/>.
@@ -192,7 +192,7 @@ second requirement.
 Since using DTLS as the lower layer of SCTP as specified in
 <xref target="RFC8261"/> also fulfills the second requirement, it can be used
 as an alternate error detection method
-(see <xref target="edm_sctp_over_dlts"/>).</t>
+(see <xref target="edm_sctp_over_dtls"/>).</t>
 <t>If an alternate error detection method is available, the computation of the
 CRC32c checksum consumes computational resources without providing any benefit.
 To avoid this, an SCTP end point could be willing to accept SCTP packets with
@@ -298,8 +298,8 @@ the ASCONF chunk.</t></li>
 requiring that the sender <bcp14>MUST</bcp14> include a correct CRC32c checksum
 in the packet.</t></li>
 </ol>
-<t>The first restriction allows backwards compatibility and the second and
-third restriction allow a simpler implementation of the extension defined in
+<t>The first restriction allows backwards compatibility, and the second and
+third restrictions allow a simpler implementation of the extension defined in
 this document.
 The last restriction covers alternate error detection method specific
 constraints.</t>
@@ -325,12 +325,12 @@ Doing so might result in faster SCTP association failure detection.</t>
 </section>
 </section>
 
-<section anchor='edm_sctp_over_dlts'>
+<section anchor='edm_sctp_over_dtls'>
 <name>Error Detection via SCTP over DTLS</name>
 <t>Using SCTP over DTLS as specified in <xref target="RFC8261"/> provides
 a stronger error detection method than using the CRC32c checksum algorithm.
-Since middle boxes will not observe the unencrypted SCTP packet, there is
-no risk in interferring with using zero as an incorrect checksum.
+Since middleboxes will not observe the unencrypted SCTP packet, there is
+no risk in interfering with using zero as an incorrect checksum.
 There are no additional error detection specific constraints on packets
 when using DTLS encapsulation.</t>
 <t>IANA is requested to assign the Error Detection Method Identifier
@@ -365,7 +365,7 @@ This means that all SCTP packets being sent have a correct CRC32c checksum
 value.</t></dd>
 <dt>SCTP_EDMID_LOWER_LAYER_DTLS:</dt>
 <dd><t>Use the alternate error detection method described in
-<xref target='edm_sctp_over_dlts'/>.</t></dd>
+<xref target='edm_sctp_over_dtls'/>.</t></dd>
 </dl>
 <t>An implementation might only send packets with an incorrect checksum of zero,
 if the alternate error detection method announced by the peer is also enabled
@@ -417,10 +417,10 @@ checksum,</t></li>
 <li><t>any method specific constraints referred to in the fourth exception in
 <xref target='sender_side_considerations'/>, and</t></li>
 <li><t>why using the alternate error detection method does not result in
-path failures due to middle boxes expecting correct CRC32c checksums for more
+path failures due to middleboxes expecting correct CRC32c checksums for more
 than a couple of RTTs.
 In case the alternate error detection method uses a heuristic for detecting
-such middle boxes, this heuristic needs to be described.</t></li>
+such middleboxes, this heuristic needs to be described.</t></li>
 </ol></li>
 </ol>
 <t>IANA is requested to use the following as the initial contents of the
@@ -480,6 +480,7 @@ addressed in an appropriate way.</t>
 <contact fullname="Peter Lei"/>,
 <contact fullname="Nils Ohlmeier"/>,
 <contact fullname="Claudio Porfiri"/>,
+<contact fullname="Greg Skinner"/>,
 <contact fullname="Timo Völker"/>, and
 <contact fullname="Magnus Westerlund"/>
 for their invaluable comments.</t>
