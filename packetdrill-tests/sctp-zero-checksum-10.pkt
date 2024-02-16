@@ -23,7 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// Test the handling of OOTB packets with correct and incorrect zero checksum.
+// Test the handling of OOTB packets with a correct and incorrect zero checksum.
 //
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`

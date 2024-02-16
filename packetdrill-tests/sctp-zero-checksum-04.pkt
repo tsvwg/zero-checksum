@@ -24,7 +24,8 @@
 // SUCH DAMAGE.
 //
 // Test that the client side operates consistently when the zero checksum
-// acceptance is turned on and turned off again. This is FreeBSD specific.
+// acceptance is turned on and turned off again.
+// This is FreeBSD specific.
 //
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`

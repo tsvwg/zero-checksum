@@ -23,8 +23,8 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// Test that the server side does not accepts packets with incorrect zero
-// checksum, if the feature was not yet enabled at the time the cookie was
+// Test that the server side does not accepts packets with an incorrect zero
+// checksum, if the feature was not enabled at the time the cookie was
 // generated.
 //
  0.0 `sysctl net.inet.sctp.ecn_enable=0`

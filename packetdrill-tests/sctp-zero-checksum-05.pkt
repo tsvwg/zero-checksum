@@ -23,9 +23,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// Test for the server side that no packets are sent with incorrect zero
+// Test for the server side that no packets are sent with an incorrect zero
 // checksum, if the peer would accept them, but the feature is not enabled
-// locally. This is FreeBSD specific.
+// locally.
+// This is FreeBSD specific.
 //
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
