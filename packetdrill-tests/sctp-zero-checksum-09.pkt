@@ -27,14 +27,14 @@
 // checksum, if the feature was not yet enabled at the time the cookie was
 // generated.
 //
- 0.0 `sysctl -w net.inet.sctp.ecn_enable=0`
-+0.0 `sysctl -w net.inet.sctp.pr_enable=0`
-+0.0 `sysctl -w net.inet.sctp.asconf_enable=0`
-+0.0 `sysctl -w net.inet.sctp.auth_enable=0`
-+0.0 `sysctl -w net.inet.sctp.reconfig_enable=0`
-+0.0 `sysctl -w net.inet.sctp.nrsack_enable=0`
-+0.0 `sysctl -w net.inet.sctp.pktdrop_enable=0`
-+0.0 `sysctl -w kern.timecounter.alloweddeviation=0`
+ 0.0 `sysctl net.inet.sctp.ecn_enable=0`
++0.0 `sysctl net.inet.sctp.pr_enable=0`
++0.0 `sysctl net.inet.sctp.asconf_enable=0`
++0.0 `sysctl net.inet.sctp.auth_enable=0`
++0.0 `sysctl net.inet.sctp.reconfig_enable=0`
++0.0 `sysctl net.inet.sctp.nrsack_enable=0`
++0.0 `sysctl net.inet.sctp.pktdrop_enable=0`
++0.0 `sysctl kern.timecounter.alloweddeviation=0`
 +0.0 socket(..., SOCK_STREAM, IPPROTO_SCTP) = 3
 +0.0 fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
 +0.0 bind(3, ..., ...) = 0
