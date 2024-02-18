@@ -331,7 +331,7 @@ Doing so might result in faster SCTP association failure detection.</t>
 a stronger error detection method than using the CRC32c checksum algorithm.
 Since middleboxes will not observe the unencrypted SCTP packet, there is
 no risk in interfering with using zero as an incorrect checksum.
-There are no additional error detection specific constraints on packets
+There are no additional error detection method specific constraints on packets
 when using DTLS encapsulation.</t>
 <t>IANA is requested to assign the Error Detection Method Identifier
 of 1 for this method.</t>
@@ -414,8 +414,8 @@ following information:</t>
 <li><t>why the alternate error detection method provides an equal or better
 level of data integrity protection than the one provided by using the CRC32c
 checksum,</t></li>
-<li><t>any method specific constraints referred to in the fourth exception in
-<xref target='sender_side_considerations'/>, and</t></li>
+<li><t>any alternate error detection method specific constraints referred to in
+the fourth exception in <xref target='sender_side_considerations'/>, and</t></li>
 <li><t>why using the alternate error detection method does not result in
 path failures due to middleboxes expecting correct CRC32c checksums for more
 than two RTOs.
