@@ -27,6 +27,7 @@
 // checksum, if the feature was not enabled at the time the cookie was
 // generated.
 //
+--ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
 +0.0 `sysctl net.inet.sctp.asconf_enable=0`

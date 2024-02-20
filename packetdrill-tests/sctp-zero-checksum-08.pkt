@@ -26,6 +26,7 @@
 // Test that the server side operates consistently when the zero checksum
 // acceptance is turned on and turned off again.
 //
+--ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
 +0.0 `sysctl net.inet.sctp.asconf_enable=0`

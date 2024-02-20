@@ -27,6 +27,7 @@
 // acceptance is turned on and turned off again.
 // This is FreeBSD specific.
 //
+--ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
 +0.0 `sysctl net.inet.sctp.asconf_enable=0`

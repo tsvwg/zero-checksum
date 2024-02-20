@@ -26,6 +26,7 @@
 // Test for the client side that incorrect zero checksums are accepted when
 // announced, even if the peer has not announced to accept them.
 //
+--ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
 +0.0 `sysctl net.inet.sctp.asconf_enable=0`

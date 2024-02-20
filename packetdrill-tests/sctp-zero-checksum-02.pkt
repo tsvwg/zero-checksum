@@ -26,6 +26,7 @@
 // Test for the client side that incorrect zero checksums are used in both
 // directions, when enabled by both sides.
 //
+--ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
 +0.0 `sysctl net.inet.sctp.pr_enable=0`
 +0.0 `sysctl net.inet.sctp.asconf_enable=0`
