@@ -10,14 +10,14 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-ietf-tsvwg-sctp-zero-checksum-08-to-be"
+     docName="draft-ietf-tsvwg-sctp-zero-checksum-08"
      version="3">
 
 <front>
 <title abbrev='Zero Checksum for SCTP'>
 Zero Checksum for the Stream Control Transmission Protocol
 </title>
-<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-sctp-zero-checksum-08-to-be"/>
+<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-sctp-zero-checksum-08"/>
 
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
   <organization abbrev='Münster Univ. of Appl. Sciences'>
@@ -58,7 +58,6 @@ Zero Checksum for the Stream Control Transmission Protocol
   </address>
 </author>
 
-<!--
 <author initials="R." surname="Jesup" fullname="Randell Jesup">
 <organization abbrev='Mozilla'>
               Mozilla Corporation</organization>
@@ -73,7 +72,6 @@ Zero Checksum for the Stream Control Transmission Protocol
     <email>randell-ietf@jesup.org</email>
 </address>
 </author>
--->
 
 <date />
 
@@ -476,8 +474,6 @@ addressed in an appropriate way.</t>
 
 <section numbered='false'>
 <name>Acknowledgments</name>
-<t>The authors wish to thank <contact fullname="Randell Jesup"/> for serving as
-a co-author of the document for a long time.</t>
 <t>The authors wish to thank
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Mike Heard"/>,
