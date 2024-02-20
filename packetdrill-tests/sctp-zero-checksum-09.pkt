@@ -23,7 +23,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// Test that the server side does not accepts packets with an incorrect zero
+// Test that the server side does not accept packets with an incorrect zero
 // checksum, if the feature was not enabled at the time the cookie was
 // generated.
 //
