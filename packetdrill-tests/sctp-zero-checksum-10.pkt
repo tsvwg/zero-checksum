@@ -23,7 +23,8 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// Test the handling of OOTB packets with a correct and incorrect zero checksum.
+// Test the handling of OOTB packets with a correct and incorrect zero checksum
+// if the SUT does accept OOTB packets with an incorrect checksum of zero.
 //
 --ip_version=ipv4
  0.0 `sysctl net.inet.sctp.ecn_enable=0`
