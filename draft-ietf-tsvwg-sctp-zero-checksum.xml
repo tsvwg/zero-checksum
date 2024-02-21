@@ -360,7 +360,7 @@ on the socket.</t>
 Possible values include:</t>
 <dl>
 <dt>SCTP_EDMID_NONE:</dt>
-<dd><t>Disable the use of alternate error detection method.
+<dd><t>Disable the use of any alternate error detection method.
 This means that all SCTP packets being sent have a correct CRC32c checksum
 value.</t></dd>
 <dt>SCTP_EDMID_LOWER_LAYER_DTLS:</dt>
