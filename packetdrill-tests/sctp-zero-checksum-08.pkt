@@ -43,12 +43,9 @@
 +0.0 < sctp: INIT[flgs=0, tag=1, a_rwnd=1500, os=1, is=1, tsn=1,
                   ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
                   SUPPORTED_ADDRESS_TYPES[types=[IPv4]]]
-// FreeBSD does not yet support the sending of the packet containing the
-// INIT-ACK chunk with a zero checksum.
-// This is a limitation and needs to be fixed.
-+0.0 > sctp: INIT_ACK[flgs=0, tag=2, a_rwnd=..., os=..., is=..., tsn=...,
-                      ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
-                      STATE_COOKIE[len=..., val=...]]
++0.0 > sctp(zero_checksum): INIT_ACK[flgs=0, tag=2, a_rwnd=..., os=..., is=..., tsn=...,
+                                     ZERO_CHECKSUM_ACCEPTABLE[edmid=SCTP_OVER_DTLS],
+                                     STATE_COOKIE[len=..., val=...]]
 // FreeBSD does not accept a packet containing the COOCKIE_ECHO chunk with
 // a zero checksum.
 +0.0 < sctp(zero_checksum): COOKIE_ECHO[flgs=0, len=..., val=...]
