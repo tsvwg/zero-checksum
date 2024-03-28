@@ -298,11 +298,13 @@ the ASCONF chunk.</t></li>
 requiring that the sender <bcp14>MUST</bcp14> include a correct CRC32c checksum
 in the packet.</t></li>
 </ol>
-<t>The first restriction allows backwards compatibility, and the second and
-third restrictions allow a simpler implementation of the extension defined in
-this document.
-The last restriction covers alternate error detection method specific
-constraints.</t>
+<t>The first restriction allows backwards compatibility.
+The second and third restrictions allow a simpler implementation of the
+extension defined in this document, because looking up the association
+for SCTP packets containing a COOKIE ECHO chunk or an ASCONF chunk might
+be more complex than for other packets.
+Finally, the last restriction covers alternate error detection method
+specific constraints.</t>
 <t>An SCTP end point <bcp14>MAY</bcp14> require that the upper layer allowed
 the use of the alternate error detection method that was announced by the peer
 before sending packets with an incorrect checksum of zero.</t>
