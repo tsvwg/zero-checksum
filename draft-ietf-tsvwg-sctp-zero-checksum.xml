@@ -193,7 +193,7 @@ Since using DTLS as the lower layer of SCTP as specified in
 <xref target="RFC8261"/> also fulfills the second requirement, it can be used
 as an alternate error detection method
 (see <xref target="edm_sctp_over_dtls"/>).</t>
-<t>If an alternate error detection method is available, the computation of the
+<t>If an alternate error detection method is used, the computation of the
 CRC32c checksum consumes computational resources without providing any benefit.
 To avoid this, an SCTP endpoint could be willing to accept SCTP packets with
 an incorrect CRC32c checksum value of zero in addition to SCTP packets with
