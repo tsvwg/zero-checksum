@@ -162,25 +162,25 @@ INIT chunk with a correct CRC32c checksum of zero.</t>
 </figure>
 
 <t>Using SCTP in combination with other mechanisms or protocol extensions might
-provide an equal or better level of data integrity protection than the one
-provided by using the CRC32c checksum algorithm.
+provide data integrity protection with an equal or lower probability of false
+negatives than the one provided by using the CRC32c checksum algorithm.
 When using such alternate error detection methods, the SCTP common header
 containing the 32-bit checksum field might or might not be visible to
 middleboxes on the paths between the two endpoints.</t>
 <t>Alternate error detection methods have two requirements:</t>
 <ol>
 <li><t>An alternate error detection method <bcp14>MUST</bcp14> provide an equal
-or better level of data integrity than the one provided by using the CRC32c
-checksum algorithm.
+or lower probability of false negatives than the one provided by using the
+CRC32c checksum algorithm.
 This <bcp14>MAY</bcp14> only apply to packets satisfying some method specific
 constraints.</t></li>
 <li><t>Using an alternate error detection method <bcp14>MUST NOT</bcp14>
 result in a path failure for more than two retransmission timeouts (RTO)
 due to middleboxes on the path expecting correct CRC32c checksums.</t></li>
 </ol>
-<t>To fulfill the second requirement, alternate error detection methods
-<bcp14>MAY</bcp14> use a heuristic to detect the existence of such middleboxes
-and use correct CRC32c checksums on these affected paths.</t>
+<t>To fulfill the second requirement, alternate error detection methods could
+use a heuristic to detect the existence of such middleboxes and use correct
+CRC32c checksums on these affected paths.</t>
 <t>One example fulfilling the first requirement is using DTLS as the lower layer
 of SCTP as specified in <xref target="RFC8261"/>.
 Another example is using SCTP Authentication as specified in
@@ -294,9 +294,9 @@ the COOKIE ECHO chunk.</t></li>
 in <xref target='RFC5061'/> and sends a packet containing an ASCONF chunk, it
 <bcp14>MUST</bcp14> include a correct CRC32c checksum in the packet containing
 the ASCONF chunk.</t></li>
-<li><t>Alternate error detection methods might have some additional conditions
-requiring that the sender <bcp14>MUST</bcp14> include a correct CRC32c checksum
-in the packet.</t></li>
+<li><t>If an alternate error detection method has some method specific
+constraints, the sender <bcp14>MUST</bcp14> include a correct CRC32c checksum
+in all packets not fulfilling these method specific constraints.</t></li>
 </ol>
 <t>The first restriction allows backwards compatibility.
 The second and third restrictions allow a simpler implementation of the
@@ -319,7 +319,9 @@ indicating the support of an alternate error detection method in an INIT or
 INIT ACK chunk, it <bcp14>MUST</bcp14> accept SCTP packets fulfilling the
 requirements of the announced alternate error detection method using
 an incorrect checksum value of zero in addition to SCTP packets containing the
-correct CRC32c checksum value for this association.</t>
+correct CRC32c checksum value for this association.
+Otherwise, the endpoint <bcp14>MUST</bcp14> drop all SCTP packets with an
+incorrect CRC32c checksum.</t>
 <t>In addition to processing OOTB packets with a correct CRC32c checksum as
 specified in <xref target='RFC9260'/>, an SCTP implementation
 <bcp14>MAY</bcp14> also process OOTB packets having an incorrect zero checksum.
@@ -413,8 +415,8 @@ following information:</t>
 <li><t>A reference to a specification describing:</t>
 <ol type='(%c)'>
 <li><t>the alternate error detection method,</t></li>
-<li><t>why the alternate error detection method provides an equal or better
-level of data integrity protection than the one provided by using the CRC32c
+<li><t>why the alternate error detection method provides an equal or
+lower probability of false negatives than the one provided by using the CRC32c
 checksum,</t></li>
 <li><t>any alternate error detection method specific constraints referred to in
 the fourth exception in <xref target='sender_side_considerations'/>, and</t></li>
@@ -477,6 +479,7 @@ addressed in an appropriate way.</t>
 <section numbered='false'>
 <name>Acknowledgments</name>
 <t>The authors wish to thank
+<contact fullname="Bernard Aboba"/>,
 <contact fullname="Martin Duke"/>,
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Mike Heard"/>,
