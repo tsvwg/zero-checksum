@@ -101,7 +101,7 @@ by DTLS.
 However, computing the CRC32c checksum  at the sender and receiver side does
 consume computational resources for no benefit.
 This is particularly important for endpoints that are computationally limited
-and use SCTP encapsulated in DTLS.</t>
+and use SCTP over DTLS.</t>
 <t>The extension described in this document allows an SCTP endpoint to declare
 that it accepts SCTP packets with a checksum of zero when using a specific
 alternate error detection method.
@@ -337,8 +337,6 @@ Since middleboxes will not observe the unencrypted SCTP packet, there is
 no risk in interfering with using zero as an incorrect checksum.
 There are no additional error detection method specific constraints on packets
 when using DTLS encapsulation.</t>
-<t>IANA is requested to assign the Error Detection Method Identifier
-of 1 for this method.</t>
 </section>
 
 <section>
@@ -487,7 +485,8 @@ addressed in an appropriate way.</t>
 <contact fullname="Nils Ohlmeier"/>,
 <contact fullname="Claudio Porfiri"/>,
 <contact fullname="Greg Skinner"/>,
-<contact fullname="Timo Völker"/>, and
+<contact fullname="Timo Völker"/>,
+<contact fullname="Éric Vyncke"/>, and
 <contact fullname="Magnus Westerlund"/>
 for their invaluable comments.</t>
 </section>
