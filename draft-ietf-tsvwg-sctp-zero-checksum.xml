@@ -399,13 +399,8 @@ SCTP:</t>
 </table>
 <t>Furthermore, IANA is requested to establish a new "Error Detection Method"
 registry for SCTP.
-<!-- This is what Magnus prefers. -->
 The assignment of new error detection methods is done through the Specification
 Required policy as defined in <xref target='RFC8126'/>.
-<!-- Gorry currently prefers:
-The assignment of new error detection methods is done through the IETF Review
-policy as defined in <xref target='RFC8126'/>.
--->
 Documentation for a new error detection method <bcp14>MUST</bcp14> contain the
 following information:</t>
 <ol>
