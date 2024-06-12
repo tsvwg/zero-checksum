@@ -444,6 +444,12 @@ addressed in an appropriate way.</t>
 <name>Security Considerations</name>
 <t>This document does not change the considerations given in
 <xref target="RFC9260"/>.</t>
+<t>Using an alternate error detection method provides an equal or better level
+of data integrity than the one provided by using the CRC32c checksum algorithm
+due to the first requirement of alternate error detection methods.
+The second requirement of alternate error detection methods ensures that the
+existence of middleboxes expecting correct CRC32c checksums does not result in
+permanent path failures.</t>
 </section>
 </middle>
 
@@ -473,6 +479,7 @@ addressed in an appropriate way.</t>
 <name>Acknowledgments</name>
 <t>The authors wish to thank
 <contact fullname="Bernard Aboba"/>,
+<contact fullname="Deb Cooley"/>,
 <contact fullname="Martin Duke"/>,
 <contact fullname="Gorry Fairhurst"/>,
 <contact fullname="Mike Heard"/>,
